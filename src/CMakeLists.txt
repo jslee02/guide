@@ -6,31 +6,42 @@ find_package(DART REQUIRED CONFIG)
 
 # Fine Qt4
 find_package(Qt4 REQUIRED)
+set(QT_USE_QTOPENGL TRUE)
+set(QT_USE_QTXMLL TRUE)
+set(QT_USE_QTTEST TRUE)
 
 # Search all header and source files
 file(GLOB_RECURSE guide_srcs "*.cpp")
 file(GLOB_RECURSE guide_hdrs "*.h")
+file(GLOB_RECURSE guide_forms "*.ui")
+file(GLOB_RECURSE guide_res "*.rc")
+qt4_wrap_cpp(guide_hdrs_moc ${guide_hdrs})
+qt4_wrap_ui(guide_forms_hdrs ${guide_forms})
+qt4_add_resources(guide_forms_res_rcc ${guide_res})
 
 # Setup directory structure for Visual Studio
 set(SUBDIRS common)
 foreach(SUBDIR ${SUBDIRS})
-        file(GLOB_RECURSE dir_files ${SUBDIR}/*.h ${SUBDIR}/*.cpp)
-        source_group(${SUBDIR} FILES ${dir_files})
+    file(GLOB_RECURSE dir_files ${SUBDIR}/*.h ${SUBDIR}/*.cpp)
+    source_group(${SUBDIR} FILES ${dir_files})
 endforeach()
 
-include_directories(${DARTExt_INCLUDE_DIRS})
+include(${QT_USE_FILE})
+add_definitions(${QT_DEFINITIONS})
+
 include_directories(${DART_INCLUDE_DIRS})
 include_directories(${GUIDE_INCLUDE_DIRS})
+include_directories(${CMAKE_BINARY_DIR})
 link_directories(${CMAKE_BINARY_DIR}/lib ${DART_LIBRARY_DIRS} ${GUIDE_LIBRARY_DIRS})
 
 # Library
 if(MSVC)
-    add_executable(guide WIN32 ${guide_srcs} ${guide_hdrs})
-    set_target_properties(grip-run PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS")
+    add_executable(guide WIN32 ${guide_srcs} ${guide_hdrs_moc} ${guide_forms_hdrs} ${guide_forms_res_rcc})
+    set_target_properties(guide PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS")
 else()
     add_executable(guide ${guide_srcs} ${guide_hdrs})
 endif()
 
-target_link_libraries(guide ${DART_LIBRARIES} ${DARTExt_LIBRARIES} ${GRIP_LIBRARIES})
+target_link_libraries(guide ${DART_LIBRARIES})
 
 install(TARGETS guide DESTINATION bin)
