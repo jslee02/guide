@@ -1,8 +1,10 @@
-#include <iostream>
+#include <QApplication>
+#include <QLabel>
 
 int main(int argc, char* argv[])
 {
-    std::cout << "Hello, World." << std::endl;
-
-    return 0;
+    QApplication app(argc, argv);
+    QLabel *label = new QLabel("Hello Qt!");
+    label->show();
+    return app.exec();
 }

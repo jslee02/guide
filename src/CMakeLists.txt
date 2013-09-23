@@ -4,7 +4,12 @@ project(guide)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_INSTALL_PREFIX}/share/dart")
 find_package(DART REQUIRED CONFIG)
 
-# Fine Qt4
+# Find OpenGL
+find_package(OpenGL)
+message(STATUS "OpenGL libraries: ${OPENGL_LIBRARY}")
+link_libraries(guide ${OPENGL_LIBRARIES})
+
+# Fine Qt4 (http://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects)
 find_package(Qt4 REQUIRED)
 set(QT_USE_QTOPENGL TRUE)
 set(QT_USE_QTXMLL TRUE)
@@ -42,6 +47,6 @@ else()
     add_executable(guide ${guide_srcs} ${guide_hdrs})
 endif()
 
-target_link_libraries(guide ${DART_LIBRARIES})
+target_link_libraries(guide ${DART_LIBRARIES} ${QT_LIBRARIES})
 
 install(TARGETS guide DESTINATION bin)

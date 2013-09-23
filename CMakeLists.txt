@@ -16,11 +16,6 @@ set(PKG_EXTERNAL_DEPS "dart")
 message(STATUS "CMAKE_SOURCE_DIR = ${CMAKE_SOURCE_DIR}")
 message(STATUS "CMAKE_BINARY_DIR = ${CMAKE_BINARY_DIR}")
 
-# Find OpenGL
-find_package(OpenGL)
-message(STATUS "OpenGL libraries: ${OPENGL_LIBRARY}")
-link_libraries(guide ${OPENGL_LIBRARIES})
-
 IF(NOT CMAKE_BUILD_TYPE)
   SET(CMAKE_BUILD_TYPE Release CACHE STRING
       "Choose the type of build, options are: None Debug Release RelWithDebInfo Profile."
