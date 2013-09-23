@@ -15,6 +15,10 @@ set(QT_USE_QTOPENGL TRUE)
 set(QT_USE_QTXMLL TRUE)
 set(QT_USE_QTTEST TRUE)
 
+# Find OGRE
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "/usr/share/OGRE/cmake/modules/")
+find_package(OGRE REQUIRED)
+
 # Search all header and source files
 file(GLOB_RECURSE guide_srcs "*.cpp")
 file(GLOB_RECURSE guide_hdrs "*.h")

@@ -1,10 +1,10 @@
 #include "MainWindow.h"
 
-#include "widgets/MainViewer.h"
+#include "widgets/ViewerWidget.h"
 
 MainWindow::MainWindow()
 {
-    mMainViewer = new MainViewer;
+    mMainViewer = new ViewerWidget;
     setCentralWidget(mMainViewer);
 
     createActions();
@@ -42,6 +42,8 @@ void MainWindow::open()
         QString fileName =
                 QFileDialog::getOpenFileName(this, tr("Open DART file"), ".",
                                              tr("all files (*.*);;sdf files (*.sdf);;skel files (*.skel);;urdf files (*.urdf)"));
+
+
         if (!fileName.isEmpty())
             loadFile(fileName);
     }
@@ -59,8 +61,8 @@ bool MainWindow::save()
 bool MainWindow::saveAs()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
-                               tr("Save Spreadsheet"), ".",
-                               tr("Spreadsheet files (*.sp)"));
+                               tr("Save GUIDE"), ".",
+                               tr("all files (*.*);;sdf files (*.sdf);;skel files (*.skel);;urdf files (*.urdf)"));
     if (fileName.isEmpty())
         return false;
 
@@ -252,12 +254,12 @@ bool MainWindow::okToContinue()
     return true;
 }
 
-bool MainWindow::loadFile(const QString &fileName)
+bool MainWindow::loadFile(const QString& fileName)
 {
-//    if (!spreadsheet->readFile(fileName)) {
-//        statusBar()->showMessage(tr("Loading canceled"), 2000);
-//        return false;
-//    }
+    if (!mMainViewer->readFile(fileName)) {
+        statusBar()->showMessage(tr("Loading canceled"), 2000);
+        return false;
+    }
 
     setCurrentFile(fileName);
     statusBar()->showMessage(tr("File loaded"), 2000);
@@ -290,7 +292,7 @@ void MainWindow::setCurrentFile(const QString &fileName)
     }
 
     setWindowTitle(tr("%1[*] - %2").arg(shownName)
-                                   .arg(tr("Spreadsheet")));
+                                   .arg(tr("GUIDE")));
 }
 
 void MainWindow::updateRecentFileActions()

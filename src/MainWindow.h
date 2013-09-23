@@ -5,7 +5,7 @@
 #include <QtCore>
 #include <QtGui>
 
-class MainViewer;
+class ViewerWidget;
 
 class MainWindow : public QMainWindow
 {
@@ -42,7 +42,7 @@ private:
     void updateRecentFileActions();
     QString strippedName(const QString &fullFileName);
 
-    MainViewer* mMainViewer;
+    ViewerWidget* mMainViewer;
     QLabel* locationLabel;
     QLabel* formulaLabel;
     QStringList recentFiles;
