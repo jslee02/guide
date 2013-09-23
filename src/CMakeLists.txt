@@ -19,10 +19,10 @@ set(QT_USE_QTTEST TRUE)
 file(GLOB_RECURSE guide_srcs "*.cpp")
 file(GLOB_RECURSE guide_hdrs "*.h")
 file(GLOB_RECURSE guide_forms "*.ui")
-file(GLOB_RECURSE guide_res "*.rc")
+file(GLOB_RECURSE guide_res "*.qrc")
 qt4_wrap_cpp(guide_hdrs_moc ${guide_hdrs})
 qt4_wrap_ui(guide_forms_hdrs ${guide_forms})
-qt4_add_resources(guide_forms_res_rcc ${guide_res})
+qt4_add_resources(guide_res_rcc ${guide_res})
 
 # Setup directory structure for Visual Studio
 set(SUBDIRS common)
@@ -41,10 +41,10 @@ link_directories(${CMAKE_BINARY_DIR}/lib ${DART_LIBRARY_DIRS} ${GUIDE_LIBRARY_DI
 
 # Library
 if(MSVC)
-    add_executable(guide WIN32 ${guide_srcs} ${guide_hdrs_moc} ${guide_forms_hdrs} ${guide_forms_res_rcc})
+    add_executable(guide WIN32 ${guide_srcs} ${guide_hdrs_moc} ${guide_forms_hdrs} ${guide_res_rcc})
     set_target_properties(guide PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS")
 else()
-    add_executable(guide ${guide_srcs} ${guide_hdrs})
+    add_executable(guide ${guide_srcs} ${guide_hdrs_moc} ${guide_forms_hdrs} ${guide_res_rcc})
 endif()
 
 target_link_libraries(guide ${DART_LIBRARIES} ${QT_LIBRARIES})
