@@ -1,0 +1,19 @@
+###############################################################################
+# Config file for GUIDE
+#
+# This sets the following variables:
+# GUIDE_INCLUDE_DIRS - Directories containing the GUIDE include files.
+# GUIDE_LIBRARIES - Libraries needed to use GUIDE.
+# GUIDE_LIBRARY_DIRS - Directories that contain the GUIDE libraries.
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "@CMAKE_INSTALL_PREFIX@/share/guide")
+find_package(GUIDEExt REQUIRED)
+
+set(GUIDE_INCLUDE_DIRS
+  "@CMAKE_INSTALL_PREFIX@/include"
+  "@CMAKE_INSTALL_PREFIX@/include/guide"
+)
+
+set(GUIDE_LIBRARY_DIRS "@CMAKE_INSTALL_PREFIX@/lib")
+
+set(GUIDE_LIBRARIES optimized guide debug guided)
