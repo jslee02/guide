@@ -84,6 +84,7 @@ set(GUIDE_LIBRARY_DIRS ${CMAKE_SOURCE_DIR}/lib)
 set(GUIDE_LIBS guide)
 set(GUIDE_LIBRARIES optimized ${GUIDE_LIBS} debug ${GUIDE_LIBS}d)
 add_subdirectory(src)
+enable_testing()
 add_subdirectory(unittests)
 
 ###############
