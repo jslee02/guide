@@ -4,6 +4,9 @@ project(guide)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_INSTALL_PREFIX}/share/dart")
 find_package(DART REQUIRED CONFIG)
 
+# Fine Qt4
+find_package(Qt4 REQUIRED)
+
 # Search all header and source files
 file(GLOB_RECURSE guide_srcs "*.cpp")
 file(GLOB_RECURSE guide_hdrs "*.h")

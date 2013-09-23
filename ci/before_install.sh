@@ -13,7 +13,7 @@ before_install() {
 
   # Install DART (refactoring branch)
   git clone https://github.com/dartsim/dart.git
-  (cd dart; cmake .; make && sudo make install)
+  (cd dart; ci/before_install.sh; cmake .; make && sudo make install)
 }
 
 APT='libboost-all-dev cmake cmake-curses-gui libgtest-dev'
