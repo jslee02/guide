@@ -16,8 +16,12 @@ set(QT_USE_QTXMLL TRUE)
 set(QT_USE_QTTEST TRUE)
 
 # Find OGRE
-#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "/usr/share/OGRE/cmake/modules/")
-find_package(Ogre REQUIRED)
+# Here we are looking for FindOGRE.cmake (on unix)
+if(UNIX)
+    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "/usr/local/lib/OGRE/cmake/")
+    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "/usr/share/OGRE/cmake/modules/")
+endif(UNIX)
+find_package(OGRE REQUIRED)
 
 # Search all header and source files
 file(GLOB_RECURSE guide_srcs "*.cpp")
@@ -38,10 +42,11 @@ endforeach()
 include(${QT_USE_FILE})
 add_definitions(${QT_DEFINITIONS})
 
+include_directories(${OGRE_INCLUDE_DIRS})
 include_directories(${DART_INCLUDE_DIRS})
 include_directories(${GUIDE_INCLUDE_DIRS})
 include_directories(${CMAKE_BINARY_DIR})
-link_directories(${CMAKE_BINARY_DIR}/lib ${DART_LIBRARY_DIRS} ${GUIDE_LIBRARY_DIRS})
+link_directories(${CMAKE_BINARY_DIR}/lib ${DART_LIBRARY_DIRS} ${OGRE_LIBRARY_DIRS} ${GUIDE_LIBRARY_DIRS})
 
 # Library
 if(MSVC)
@@ -51,6 +56,6 @@ else()
     add_executable(guide ${guide_srcs} ${guide_hdrs_moc} ${guide_forms_hdrs} ${guide_res_rcc})
 endif()
 
-target_link_libraries(guide ${DART_LIBRARIES} ${QT_LIBRARIES})
+target_link_libraries(guide ${DART_LIBRARIES} ${QT_LIBRARIES} ${OGRE_LIBRARIES})
 
 install(TARGETS guide DESTINATION bin)
