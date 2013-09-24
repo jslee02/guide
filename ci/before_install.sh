@@ -16,7 +16,7 @@ before_install() {
   (cd dart; ci/before_install.sh; cmake .; make && sudo make install)
 }
 
-APT='libboost-all-dev cmake cmake-curses-gui libgtest-dev'
+APT='libboost-all-dev cmake cmake-curses-gui libgtest-dev libqt4-dev libogre-dev'
 
 sudo apt-get install $APT
 (before_install)
