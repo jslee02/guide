@@ -17,11 +17,20 @@ set(QT_USE_QTTEST TRUE)
 
 # Find OGRE
 # Here we are looking for FindOGRE.cmake (on unix)
-if(UNIX)
-    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "/usr/local/lib/OGRE/cmake/")
-    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "/usr/share/OGRE/cmake/modules/")
-endif(UNIX)
-find_package(OGRE REQUIRED)
+#if(UNIX)
+#    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "/usr/local/lib/OGRE/cmake/")
+#    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "/usr/share/OGRE/cmake/modules/")
+#endif(UNIX)
+#find_package(OGRE REQUIRED)
+
+# Find OSG
+find_package(OpenThreads REQUIRED)
+find_package(osg REQUIRED)
+find_package(osgQt REQUIRED)
+find_package(osgViewer REQUIRED)
+find_package(osgGA REQUIRED)
+find_package(osgDB REQUIRED)
+find_package(osgUtil REQUIRED)
 
 # Search all header and source files
 file(GLOB_RECURSE guide_srcs "*.cpp")
@@ -42,11 +51,28 @@ endforeach()
 include(${QT_USE_FILE})
 add_definitions(${QT_DEFINITIONS})
 
-include_directories(${OGRE_INCLUDE_DIRS})
+#include_directories(${OGRE_INCLUDE_DIRS})
 include_directories(${DART_INCLUDE_DIRS})
 include_directories(${GUIDE_INCLUDE_DIRS})
+include_directories(${OPENTHREADS_INCLUDE_DIR})
+include_directories(${OSG_INCLUDE_DIR})
+include_directories(${OSGQT_INCLUDE_DIR})
+include_directories(${OSGVIEWER_INCLUDE_DIR})
+include_directories(${OSGGA_INCLUDE_DIR})
+include_directories(${OSGDB_INCLUDE_DIR})
+include_directories(${OSGUTIL_INCLUDE_DIR})
 include_directories(${CMAKE_BINARY_DIR})
-link_directories(${CMAKE_BINARY_DIR}/lib ${DART_LIBRARY_DIRS} ${OGRE_LIBRARY_DIRS} ${GUIDE_LIBRARY_DIRS})
+link_directories(${CMAKE_BINARY_DIR}/lib
+    ${DART_LIBRARY_DIRS}
+    ${OGRE_LIBRARY_DIRS}
+    ${GUIDE_LIBRARY_DIRS}
+    ${OPENTHREADS_LIBRARY_DIRS}
+    ${OSG_LIBRARY_DIRS}
+    ${OSGQT_LIBRARY_DIRS}
+    ${OSGVIEWER_LIBRARY_DIRS}
+    ${OSGGA_LIBRARY_DIRS}
+    ${OSGDB_LIBRARY_DIRS}
+    ${OSGUTIL_LIBRARY_DIRS})
 
 # Library
 if(MSVC)
@@ -56,6 +82,9 @@ else()
     add_executable(guide ${guide_srcs} ${guide_hdrs_moc} ${guide_forms_hdrs} ${guide_res_rcc})
 endif()
 
-target_link_libraries(guide ${DART_LIBRARIES} ${QT_LIBRARIES} ${OGRE_LIBRARIES})
+target_link_libraries(guide ${DART_LIBRARIES} ${QT_LIBRARIES} ${OGRE_LIBRARIES}
+    ${OPENTHREADS_LIBRARIES} ${OSG_LIBRARIES} ${OSGQT_LIBRARIES}
+    ${OSGVIEWER_LIBRARIES} ${OSGGA_LIBRARIES} ${OSGDB_LIBRARIES}
+    ${OSGUTIL_LIBRARIES})
 
 install(TARGETS guide DESTINATION bin)
