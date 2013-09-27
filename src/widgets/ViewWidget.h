@@ -9,12 +9,20 @@
 #include <QtGui>
 #include <QWidget>
 
-class ViewWidget : public QWidget
+#include <osgViewer/CompositeViewer>
+#include <osgViewer/ViewerEventHandlers>
+#include <osgGA/TrackballManipulator>
+#include <osgDB/ReadFile>
+#include <osgQt/GraphicsWindowQt>
+
+class ViewerWidget;
+
+class ViewWidget : public osgQt::GLWidget
 {
     Q_OBJECT
 
 public:
-    ViewWidget(QWidget *parent = 0);
+    ViewWidget(osg::Node* scene, ViewerWidget* viewer, QWidget *parent = 0);
     ~ViewWidget();
 
 signals: void clicked();
@@ -35,6 +43,8 @@ protected:
     void mouseReleaseEvent(QMouseEvent *_event);
 
 private:
+    osgQt::GraphicsWindowQt* mOsgGraphicsWindow;
+    osgViewer::View* mOsgView;
 
     QPoint rubberBandCorner1;
     QPoint rubberBandCorner2;

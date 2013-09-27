@@ -4,28 +4,49 @@
 #include <QtCore>
 #include <QBoxLayout>
 
+#include <dart/utils/SkelParser.h>
+
 #include "widgets/ViewWidget.h"
 
 using namespace dart;
 
-ViewerWidget::ViewerWidget(QWidget* parent)
-    : QWidget(parent), mWorld(NULL)
+
+ViewerWidget::ViewerWidget(osgViewer::ViewerBase::ThreadingModel threadingModel,
+                           QWidget* parent)
+    : QWidget(parent),
+      mWorld(NULL),
+      mScene(NULL)
 {
-    this->mTimer = new QTimer(this);
-    connect(this->mTimer, SIGNAL(timeout()), this, SLOT(update()));
-    this->mTimer->start(44);
+    setThreadingModel(threadingModel);
 
-    QBoxLayout* viewerLayout = new QBoxLayout(QBoxLayout::TopToBottom);
-    mViewWidget = new ViewWidget(this);
-    viewerLayout->addWidget(mViewWidget);
+    // disable the default setting of viewer.done() by pressing Escape.
+    setKeyEventSetsDone(0);
 
-    setLayout(viewerLayout);
+    widget1 = new ViewWidget(mScene, this);
+//    widget2 = new ViewWidget(mScene, this);
+//    widget3 = new ViewWidget(mScene, this);
+//    widget4 = new ViewWidget(mScene, this);
+//    popupWidget = new ViewWidget(mScene, this);
+    //popupWidget->show();
+
+    QGridLayout* grid = new QGridLayout;
+    grid->addWidget(widget1, 0, 0);
+//    grid->addWidget(widget2, 0, 1);
+//    grid->addWidget(widget3, 1, 0);
+//    grid->addWidget(widget4, 1, 1);
+    setLayout(grid);
+
+    mTimer = new QTimer(this);
+    connect(mTimer, SIGNAL(timeout()), this, SLOT(update()));
+    mTimer->start(10);
 }
 
 ViewerWidget::~ViewerWidget()
 {
     if (mWorld)
         delete mWorld;
+
+    delete mTimer;
 }
 
 bool ViewerWidget::readFile(const QString& fileName)
@@ -79,16 +100,23 @@ void ViewerWidget::mouseReleaseEvent(QMouseEvent * /* event */)
 {
 }
 
-void ViewerWidget::update()
+void ViewerWidget::moveEvent(QMoveEvent* e)
 {
-    mViewWidget->update();
+    QWidget::moveEvent(e);
 }
 
-void ViewerWidget::_drawWorld()
+void ViewerWidget::paintEvent(QPaintEvent* e)
 {
-    if (mWorld == NULL)
-        return;
-
-//    for (int i = 0; i < mWorld->getNumSkeletons(); i++)
-//        mWorld->getSkeleton(i)->draw(mRI);
+    frame();
 }
+
+void ViewerWidget::resizeEvent(QResizeEvent* e)
+{
+    QWidget::resizeEvent(e);
+}
+
+void ViewerWidget::showEvent(QShowEvent* e)
+{
+    QWidget::showEvent(e);
+}
+
