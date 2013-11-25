@@ -8,7 +8,7 @@ message(STATUS "Generate makefile/project file for GUIDE")
 
 set(GUIDE_MAJOR_VERSION "0")
 set(GUIDE_MINOR_VERSION "1")
-set(GUIDE_PATCH_VERSION "0precise")
+set(GUIDE_PATCH_VERSION "0")
 set(PKG_DESC "Graphical User Interface for DART Engine.")
 set(GUIDE_VERSION "${GUIDE_MAJOR_VERSION}.${GUIDE_MINOR_VERSION}.${GUIDE_PATCH_VERSION}")
 set(PKG_EXTERNAL_DEPS "dart")
