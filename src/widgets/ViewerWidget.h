@@ -13,6 +13,8 @@
 #include <osgDB/ReadFile>
 #include <osgQt/GraphicsWindowQt>
 
+class WorldScene;
+
 class ViewerWidget : public QWidget, public osgViewer::CompositeViewer
 {
     Q_OBJECT
@@ -51,6 +53,8 @@ private:
     QWidget* widget3;
     QWidget* widget4;
     QWidget* popupWidget;
+
+    WorldScene* mWorldScene;
 
     osg::Node* mScene;
 

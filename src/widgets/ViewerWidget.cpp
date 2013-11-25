@@ -6,6 +6,7 @@
 
 #include <dart/utils/SkelParser.h>
 
+#include "WorldScene.h"
 #include "widgets/ViewWidget.h"
 
 using namespace dart;
@@ -79,6 +80,8 @@ bool ViewerWidget::readFile(const QString& fileName)
         delete mWorld;
 
     mWorld = world;
+
+    mWorldScene->setWorld(mWorld);
 
     return true;
 }
