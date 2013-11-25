@@ -11,7 +11,7 @@ before_install() {
   echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
   echo -e "Host bitbucket.org\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
-  # Install DART (refactoring branch)
+  # Install DART
   git clone https://github.com/dartsim/dart.git
   (cd dart; ci/before_install.sh; cmake .; make && sudo make install)
 }
