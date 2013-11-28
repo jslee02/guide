@@ -105,7 +105,6 @@ include_directories("${CMAKE_BINARY_DIR}/src")
 link_directories(
     "${CMAKE_BINARY_DIR}/lib"
     "${CMAKE_INSTALL_PREFIX}/lib"
-
     ${Boost_LIBRARY_DIRS}
     ${DART_LIBRARY_DIRS}
     ${GUIDE_LIBRARY_DIRS}
