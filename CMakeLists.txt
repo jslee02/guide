@@ -55,10 +55,73 @@ if(WIN32 AND CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 endif()
 
 ###############
-# Install Targets
+# Find dependencies
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
+# Find DART
+find_package(DART REQUIRED CONFIG)
+
+# Find OpenGL
+find_package(OpenGL)
+message(STATUS "OpenGL libraries: ${OPENGL_LIBRARY}")
+link_libraries(guide ${OPENGL_LIBRARIES})
+
+# Boost
+find_package(Boost REQUIRED system filesystem)
+if(MSVC OR MSVC90 OR MSVC10)
+    add_definitions(-DBOOST_ALL_NO_LIB)
+endif()
+add_definitions(-DBOOST_TEST_DYN_LINK)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
+
+# Fine Qt4 (http://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects)
+find_package(Qt4 REQUIRED)
+set(QT_USE_QTOPENGL TRUE)
+set(QT_USE_QTXMLL TRUE)
+set(QT_USE_QTTEST TRUE)
+
+# Find OSG
+find_package(OpenThreads REQUIRED)
+find_package(osg REQUIRED)
+find_package(osgQt REQUIRED)
+find_package(osgViewer REQUIRED)
+find_package(osgGA REQUIRED)
+find_package(osgDB REQUIRED)
+find_package(osgUtil REQUIRED)
+
+include_directories(${DART_INCLUDE_DIRS})
+include_directories(${GUIDE_INCLUDE_DIRS})
+include_directories(${OPENTHREADS_INCLUDE_DIR})
+include_directories(${OSG_INCLUDE_DIR})
+include_directories(${OSGQT_INCLUDE_DIR})
+include_directories(${OSGVIEWER_INCLUDE_DIR})
+include_directories(${OSGGA_INCLUDE_DIR})
+include_directories(${OSGDB_INCLUDE_DIR})
+include_directories(${OSGUTIL_INCLUDE_DIR})
+include_directories(${CMAKE_BINARY_DIR})
+link_directories(
+    "${CMAKE_BINARY_DIR}/lib"
+    "${CMAKE_INSTALL_PREFIX}/lib"
+    ${Boost_LIBRARY_DIRS}
+    ${DART_LIBRARY_DIRS}
+    ${GUIDE_LIBRARY_DIRS}
+    ${OPENTHREADS_LIBRARY_DIRS}
+    ${OSG_LIBRARY_DIRS}
+    ${OSGQT_LIBRARY_DIRS}
+    ${OSGVIEWER_LIBRARY_DIRS}
+    ${OSGGA_LIBRARY_DIRS}
+    ${OSGDB_LIBRARY_DIRS}
+    ${OSGUTIL_LIBRARY_DIRS})
+
+set(GUIDE_DEPENDENCIES
+    ${Boost_LIBRARIES}
+    ${OPENGL_LIBRARIES}
+)
+
+###############
 # Generate the GUIDE CMake Config file
-file(GLOB cmake_mods "cmake/Modules/*.cmake")
-configure_file(${CMAKE_SOURCE_DIR}/cmake/GUIDEConfig.cmake.in ${CMAKE_BINARY_DIR}/cmake/GUIDEConfig.cmake @ONLY)
+configure_file(cmake/GUIDEConfig.cmake.in "${CMAKE_BINARY_DIR}/cmake/GUIDEConfig.cmake" @ONLY)
 install(FILES ${CMAKE_BINARY_DIR}/cmake/GUIDEConfig.cmake DESTINATION share/guide)
 
 set(PC_CONFIG_IN ${CMAKE_SOURCE_DIR}/cmake/guide.pc.in)
@@ -67,20 +130,43 @@ configure_file(${PC_CONFIG_IN} ${PC_CONFIG_OUT} @only)
 install(FILES ${PC_CONFIG_OUT} DESTINATION lib/pkgconfig)
 
 ###############
+# Build source
+add_subdirectory(src)
+enable_testing()
+add_subdirectory(unittests)
+
+install(EXPORT GUIDETargets DESTINATION share/guide)
+
+###############
 # Add an "uninstall" target
 configure_file ("${PROJECT_SOURCE_DIR}/cmake/uninstall_target.cmake.in" "${PROJECT_BINARY_DIR}/uninstall_target.cmake" IMMEDIATE @ONLY)
 add_custom_target (uninstall "${CMAKE_COMMAND}" -P "${PROJECT_BINARY_DIR}/uninstall_target.cmake")
 
 ###############
-# Build source
-include_directories(BEFORE src)
-set(GUIDE_INCLUDE_DIRS src)
-set(GUIDE_LIBRARY_DIRS ${CMAKE_SOURCE_DIR}/lib)
-set(GUIDE_LIBS guide)
-set(GUIDE_LIBRARIES optimized ${GUIDE_LIBS} debug ${GUIDE_LIBS}d)
-add_subdirectory(src)
-enable_testing()
-add_subdirectory(unittests)
+# Doxygen
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+  set(DOXYGEN_INPUT "Doxyfile")
+  set(DOXYGEN_OUTPUT "doc")
+
+  add_custom_command(
+    OUTPUT ${DOXYGEN_OUTPUT}
+    COMMAND ${CMAKE_COMMAND} -E echo_append "Building API Documentation..."
+    COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_INPUT}
+    COMMAND ${CMAKE_COMMAND} -E echo "Done."
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    DEPENDS ${DOXYGEN_INPUT}
+    )
+
+  add_custom_target(docs DEPENDS ${DOXYGEN_OUTPUT})
+  # add_custom_target(apidoc ALL DEPENDS ${DOXYGEN_OUTPUT})
+
+  add_custom_target(docs_forced
+    COMMAND ${CMAKE_COMMAND} -E echo_append "Building API Documentation..."
+    COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_INPUT}
+    COMMAND ${CMAKE_COMMAND} -E echo "Done."
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+endif()
 
 ###############
 # Package Installer

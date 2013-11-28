@@ -6,14 +6,16 @@
 # GUIDE_LIBRARIES - Libraries needed to use GUIDE.
 # GUIDE_LIBRARY_DIRS - Directories that contain the GUIDE libraries.
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "@CMAKE_INSTALL_PREFIX@/share/guide")
-find_package(GUIDEExt REQUIRED)
+get_filename_component(CURRENT_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
 
 set(GUIDE_INCLUDE_DIRS
   "@CMAKE_INSTALL_PREFIX@/include"
   "@CMAKE_INSTALL_PREFIX@/include/guide"
+  "@Eigen_INCLUDE_DIRS@"
 )
 
-set(GUIDE_LIBRARY_DIRS "@CMAKE_INSTALL_PREFIX@/lib")
+set(GUIDE_LIBRARY_DIRS "@CMAKE_INSTALL_PREFIX@/lib" "@Boost_LIBRARY_DIRS@")
 
-set(GUIDE_LIBRARIES optimized guide debug guided)
+include("${CURRENT_DIR}/DARTTargets.cmake")
+
+set(GUIDE_LIBRARIES guide)

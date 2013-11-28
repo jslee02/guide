@@ -4,8 +4,6 @@
 # @brief The CMakefile for the tests for the RRT implementations. NOTE Assumes every .cpp file is
 # a test file with a "main" function.
 
-project(UnitTests)
-
 # Create a macro to check if a list contains a value
 macro(list_contains var value)
   set(${var})
@@ -41,7 +39,6 @@ foreach(test ${tests})
 
 	# Get the name (i.e. bla.cpp => bla)
 	get_filename_component(base ${test} NAME_WE)
-	link_directories(${GUIDEExt_LIBRARY_DIRS})
 	add_executable(${base} ${test})
 	target_link_libraries(${base} optimized guide debug guided optimized gtest debug gtestd ${GUIDEExt_LIBRARIES})
 
