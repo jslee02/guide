@@ -16,7 +16,8 @@ before_install() {
   (cd dart; ci/before_install.sh; cmake .; make && sudo make install)
 }
 
-APT='freeglut3 freeglut3-dev libglu1-mesa-dev libboost-all-dev cmake cmake-curses-gui libgtest-dev libqt4-dev libopenscenegraph-dev'
+APT='freeglut3 freeglut3-dev libglu1-mesa-dev libxmu-dev libxi-dev libwxgtk2.8-dev
+ libboost-all-dev cmake cmake-curses-gui libgtest-dev libqt4-dev libopenscenegraph-dev'
 
 sudo apt-get install $APT
 (before_install)
