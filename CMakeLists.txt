@@ -90,6 +90,7 @@ find_package(osgGA REQUIRED)
 find_package(osgDB REQUIRED)
 find_package(osgUtil REQUIRED)
 
+include_directories(BEFORE src)
 include_directories(${DART_INCLUDE_DIRS})
 include_directories(${GUIDE_INCLUDE_DIRS})
 include_directories(${OPENTHREADS_INCLUDE_DIR})
@@ -100,9 +101,11 @@ include_directories(${OSGGA_INCLUDE_DIR})
 include_directories(${OSGDB_INCLUDE_DIR})
 include_directories(${OSGUTIL_INCLUDE_DIR})
 include_directories(${CMAKE_BINARY_DIR})
+include_directories("${CMAKE_BINARY_DIR}/src")
 link_directories(
     "${CMAKE_BINARY_DIR}/lib"
     "${CMAKE_INSTALL_PREFIX}/lib"
+
     ${Boost_LIBRARY_DIRS}
     ${DART_LIBRARY_DIRS}
     ${GUIDE_LIBRARY_DIRS}
