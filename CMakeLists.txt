@@ -90,6 +90,57 @@ find_package(osgGA REQUIRED)
 find_package(osgDB REQUIRED)
 find_package(osgUtil REQUIRED)
 
+# Find Ogre3d
+# setup some possible locations for OGRE
+if(WIN32)
+  getenv_path(OGRE_HOME)
+  getenv_path(OGRE_SDK)
+  getenv_path(PROGRAMFILES)
+
+  set(OGRE_ROOT_GUESSES
+    ${ENV_PROGRAMFILES}/OGRE
+    C:/OgreSDK
+    $ENV_OGRE_HOME
+    $ENV_OGRE_SDK
+    ${OGRE_HOME}
+    ${OGRE_SDK}
+  )
+elseif(UNIX)
+  set(OGRE_ROOT_GUESSES
+    /opt/ogre
+    /opt/OGRE
+    /usr/lib${LIB_SUFFIX}/ogre
+    /usr/lib${LIB_SUFFIX}/OGRE
+    /usr/local/lib${LIB_SUFFIX}/ogre
+    /usr/local/lib${LIB_SUFFIX}/OGRE
+    /usr/share/OGRE/cmake/modules
+    $ENV{HOME}/ogre
+    $ENV{HOME}/OGRE
+    $ENV_OGRE_HOME
+    $ENV_OGRE_SDK
+    ${OGRE_HOME}
+    ${OGRE_SDK}
+    "$ENV{OGRE_HOME}/CMake/"
+    "/usr/local/lib/OGRE/cmake"
+    "/usr/lib/OGRE/cmake"
+    "/usr/share/OGRE/cmake"
+  )
+endif ()
+
+# find Ogre cmake modules path
+find_path(OGRE_CMAKE_MODULE_PATH FindOGRE.cmake
+    HINTS ${OGRE_ROOT_GUESSES}
+)
+if(OGRE_CMAKE_MODULE_PATH-NOTFOUND)
+  message(SEND_ERROR "Failed to find OGRE module path.")
+else()
+  set(CMAKE_MODULE_PATH ${OGRE_CMAKE_MODULE_PATH} ${CMAKE_MODULE_PATH})
+endif()
+
+find_package(OGRE REQUIRED)
+find_package(OIS REQUIRED)
+
+#-------------------------------------------------------------------------------
 include_directories(BEFORE src)
 include_directories(${DART_INCLUDE_DIRS})
 include_directories(${GUIDE_INCLUDE_DIRS})
