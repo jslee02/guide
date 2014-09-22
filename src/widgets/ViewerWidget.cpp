@@ -64,7 +64,7 @@ bool ViewerWidget::readFile(const QString& fileName)
 
     QApplication::setOverrideCursor(Qt::WaitCursor);
     // TODO: Read other file formats such as sdf, urdf
-    simulation::World* world = utils::SkelParser::readSkelFile(fileName.toStdString());
+    simulation::World* world = utils::SkelParser::readWorld(fileName.toStdString());
     QApplication::restoreOverrideCursor();
 
     if (world == NULL)
