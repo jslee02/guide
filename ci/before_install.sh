@@ -15,6 +15,8 @@ libopenscenegraph-dev
 libqt4-dev
 libxmu-dev
 libxi-dev
+libois-dev
+libogre-1.7.4-dev
 '
 
 sudo apt-get install $APT
