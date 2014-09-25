@@ -2,8 +2,8 @@
 
 WorldScene::WorldScene()
 {
-    mRootNode = NULL;
-    mWorld = NULL;
+  mRootNode = NULL;
+  mWorld = NULL;
 }
 
 WorldScene::~WorldScene()
@@ -13,10 +13,10 @@ WorldScene::~WorldScene()
 
 void WorldScene::setWorld(dart::simulation::World* _world)
 {
-    mWorld = _world;
+  mWorld = _world;
 }
 
 osg::Node*WorldScene::getRootNode() const
 {
-    return mRootNode;
+  return mRootNode;
 }

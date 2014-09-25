@@ -8,17 +8,17 @@
 class WorldScene
 {
 public:
-    WorldScene();
-    ~WorldScene();
+  WorldScene();
+  ~WorldScene();
 
-    void setWorld(dart::simulation::World* _world);
+  void setWorld(dart::simulation::World* _world);
 
-    osg::Node* getRootNode() const;
+  osg::Node* getRootNode() const;
 
 protected:
-    dart::simulation::World* mWorld;
+  dart::simulation::World* mWorld;
 
-    osg::Node* mRootNode;
+  osg::Node* mRootNode;
 
 private:
 

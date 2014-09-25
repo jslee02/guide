@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.11)
 set(CMAKE_LEGACY_CYGWIN_WIN32 0)
 set(CMAKE_CXX_WARNING_LEVEL 4)
 # Disables a warning about a change in Cygwin Cmake
@@ -58,8 +58,12 @@ endif()
 # Find dependencies
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
+# Find Eigen3
+find_package(Eigen3 REQUIRED)
+include_directories(${Eigen_INCLUDE_DIRS})
+
 # Find DART
-find_package(DART REQUIRED CONFIG)
+find_package(DARTCore 4.0 REQUIRED)
 
 # Find OpenGL
 find_package(OpenGL)
@@ -75,20 +79,21 @@ add_definitions(-DBOOST_TEST_DYN_LINK)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
 
-# Fine Qt4 (http://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects)
-find_package(Qt4 REQUIRED)
-set(QT_USE_QTOPENGL TRUE)
-set(QT_USE_QTXMLL TRUE)
-set(QT_USE_QTTEST TRUE)
+## Fine Qt4 (http://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects)
+#find_package(Qt5 REQUIRED)
+#set(QT_USE_QTOPENGL TRUE)
+#set(QT_USE_QTXMLL TRUE)
+#set(QT_USE_QTTEST TRUE)
 
-# Find OSG
-find_package(OpenThreads REQUIRED)
-find_package(osg REQUIRED)
-find_package(osgQt REQUIRED)
-find_package(osgViewer REQUIRED)
-find_package(osgGA REQUIRED)
-find_package(osgDB REQUIRED)
-find_package(osgUtil REQUIRED)
+# Qt5 - http://qt-project.org/doc/qt-5/cmake-manual.html
+# Find includes in corresponding build directories
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+# Instruct CMake to run moc automatically when needed.
+set(CMAKE_AUTOMOC ON)
+
+# Find the QtWidgets library
+find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Core    REQUIRED)
 
 # Find Ogre3d
 # setup some possible locations for OGRE
@@ -145,12 +150,6 @@ include_directories(BEFORE src)
 include_directories(${DART_INCLUDE_DIRS})
 include_directories(${GUIDE_INCLUDE_DIRS})
 include_directories(${OPENTHREADS_INCLUDE_DIR})
-include_directories(${OSG_INCLUDE_DIR})
-include_directories(${OSGQT_INCLUDE_DIR})
-include_directories(${OSGVIEWER_INCLUDE_DIR})
-include_directories(${OSGGA_INCLUDE_DIR})
-include_directories(${OSGDB_INCLUDE_DIR})
-include_directories(${OSGUTIL_INCLUDE_DIR})
 include_directories(${CMAKE_BINARY_DIR})
 include_directories("${CMAKE_BINARY_DIR}/src")
 link_directories(
@@ -159,14 +158,7 @@ link_directories(
     ${Boost_LIBRARY_DIRS}
     ${DART_LIBRARY_DIRS}
     ${GUIDE_LIBRARY_DIRS}
-    ${OPENTHREADS_LIBRARY_DIRS}
-    ${OSG_LIBRARY_DIRS}
-    ${OSGQT_LIBRARY_DIRS}
-    ${OSGVIEWER_LIBRARY_DIRS}
-    ${OSGGA_LIBRARY_DIRS}
-    ${OSGDB_LIBRARY_DIRS}
-    ${OSGUTIL_LIBRARY_DIRS})
-
+)
 set(GUIDE_DEPENDENCIES
     ${Boost_LIBRARIES}
     ${OPENGL_LIBRARIES}
