@@ -58,7 +58,7 @@ if(MSVC)
   set_target_properties(${target} PROPERTIES STATIC_LIBRARY_FLAGS_RELEASE "/LTCG")
 endif()
 
-set(OGRE_RESOURCE_FOLDER ${CMAKE_SOURCE_DIR}/src/resources)
+set(OGRE_RESOURCE_FOLDER ${CMAKE_SOURCE_DIR}/guide/resources)
 
 if(UNIX)
   include_directories(/usr/include/OGRE)
@@ -79,13 +79,13 @@ elseif(WIN32)
 endif()
 
 configure_file(
-  "${CMAKE_SOURCE_DIR}/src/plugins.cfg.in"
-  "${CMAKE_BINARY_DIR}/src/plugins.cfg"
+  "${CMAKE_SOURCE_DIR}/guide/plugins.cfg.in"
+  "${CMAKE_BINARY_DIR}/guide/plugins.cfg"
   )
 
 configure_file(
-  "${CMAKE_SOURCE_DIR}/src/resources.cfg.in"
-  "${CMAKE_BINARY_DIR}/src/resources.cfg"
+  "${CMAKE_SOURCE_DIR}/guide/resources.cfg.in"
+  "${CMAKE_BINARY_DIR}/guide/resources.cfg"
 )
 
 install(DIRECTORY ./ DESTINATION include/guide FILES_MATCHING PATTERN "*.h")

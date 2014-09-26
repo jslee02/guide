@@ -145,12 +145,12 @@ find_package(OGRE REQUIRED)
 find_package(OIS REQUIRED)
 
 #-------------------------------------------------------------------------------
-include_directories(BEFORE src)
+include_directories(BEFORE guide)
 include_directories(${DART_INCLUDE_DIRS})
 include_directories(${GUIDE_INCLUDE_DIRS})
 include_directories(${OGRE_INCLUDE_DIRS})
 include_directories(${CMAKE_BINARY_DIR})
-include_directories("${CMAKE_BINARY_DIR}/src")
+include_directories("${CMAKE_BINARY_DIR}/guide")
 link_directories(
     "${CMAKE_BINARY_DIR}/lib"
     "${CMAKE_INSTALL_PREFIX}/lib"
@@ -175,7 +175,7 @@ install(FILES ${PC_CONFIG_OUT} DESTINATION lib/pkgconfig)
 
 ###############
 # Build source
-add_subdirectory(src)
+add_subdirectory(guide)
 enable_testing()
 add_subdirectory(unittests)
 
