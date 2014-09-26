@@ -3,8 +3,11 @@ echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 echo -e "Host bitbucket.org\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
 # Install DART
-git clone https://github.com/dartsim/dart.git
-(cd dart; ci/before_install.sh; cmake .; make && sudo make install)
+sudo apt-add-repository ppa:libccd-debs
+sudo apt-add-repository ppa:fcl-debs
+sudo apt-add-repository ppa:dartsim
+sudo apt-get update
+sudo apt-get install libdart4-dev
 
 APT='
 freeglut3-dev
