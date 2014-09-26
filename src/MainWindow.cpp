@@ -186,9 +186,21 @@ void MainWindow::open()
 {
   if (okToContinue())
   {
-    QString fileName =
-        QFileDialog::getOpenFileName(this, tr("Open DART file"), "",
-                                     tr("all files (*.*);;sdf files (*.sdf);;skel files (*.skel);;urdf files (*.urdf)"));
+    // TODO(JS): native dialog doesn't work
+    QFileDialog::Option option = QFileDialog::DontUseNativeDialog;
+
+    QString filters = tr("all files (*.*);;")
+                      + tr("sdf files (*.sdf);;")
+                      + tr("skel files (*.skel);;")
+                      + tr("urdf files (*.urdf)");
+
+    QString fileName
+        = QFileDialog::getOpenFileName(this,
+                                       tr("Open skel file"),
+                                       QCoreApplication::applicationDirPath(),
+                                       filters,
+                                       NULL,
+                                       option);
 
     if (!fileName.isEmpty())
       loadFile(fileName);
