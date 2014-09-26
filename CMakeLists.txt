@@ -63,7 +63,7 @@ find_package(Eigen3 REQUIRED)
 include_directories(${Eigen_INCLUDE_DIRS})
 
 # Find DART
-find_package(DARTCore 4.0 REQUIRED)
+find_package(DART 4.0 REQUIRED)
 
 # Find OpenGL
 find_package(OpenGL)

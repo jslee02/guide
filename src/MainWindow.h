@@ -5,6 +5,8 @@
 
 #include <QtWidgets>
 
+#include <dart/simulation/World.h>
+
 class QOgreWidget;
 
 class MainWindow : public QMainWindow
@@ -45,6 +47,7 @@ private:
   void writeSettings();
   bool okToContinue();
   bool loadFile(const QString &fileName);
+  bool loadWorld(const QString& _fileName);
   bool saveFile(const QString &fileName);
   void setCurrentFile(const QString &fileName);
   void updateRecentFileActions();
@@ -76,6 +79,12 @@ private:
 
   ///
   //QCameraMan* mCameraMan;
+
+  //----------------------------------------------------------------------------
+  // DART
+  //----------------------------------------------------------------------------
+  /// World
+  dart::simulation::World* mWorld;
 
   //----------------------------------------------------------------------------
 

@@ -2,6 +2,10 @@
 
 #include "widgets/QOgreWidget.h"
 
+#include <dart/utils/SkelParser.h>
+
+using namespace dart;
+
 //==============================================================================
 MainWindow::MainWindow()
 {
@@ -183,7 +187,7 @@ void MainWindow::open()
   if (okToContinue())
   {
     QString fileName =
-        QFileDialog::getOpenFileName(this, tr("Open DART file"), ".",
+        QFileDialog::getOpenFileName(this, tr("Open DART file"), "",
                                      tr("all files (*.*);;sdf files (*.sdf);;skel files (*.skel);;urdf files (*.urdf)"));
 
     if (!fileName.isEmpty())
@@ -414,13 +418,53 @@ bool MainWindow::okToContinue()
 //==============================================================================
 bool MainWindow::loadFile(const QString& fileName)
 {
-  //  if (!mMainViewer->readFile(fileName)) {
-  //    statusBar()->showMessage(tr("Loading canceled"), 2000);
-  //    return false;
-  //  }
+  if (!loadWorld(fileName))
+  {
+    statusBar()->showMessage(tr("Loading canceled"), 2000);
+    return false;
+  }
 
   setCurrentFile(fileName);
   statusBar()->showMessage(tr("File loaded"), 2000);
+  return true;
+}
+
+
+//==============================================================================
+bool MainWindow::loadWorld(const QString& _fileName)
+{
+  QFile file(_fileName);
+
+  if (!file.open(QIODevice::ReadOnly))
+  {
+    QMessageBox::warning(this, tr("GUIDE"),
+                         tr("Cannot read file %1:\n%2.")
+                         .arg(file.fileName())
+                         .arg(file.errorString()));
+    return false;
+  }
+
+  file.close();
+
+  QApplication::setOverrideCursor(Qt::WaitCursor);
+
+  // TODO: Read other file formats such as sdf, urdf
+  std::string stdFileName = _fileName.toStdString();
+  simulation::World* world = utils::SkelParser::readWorld(stdFileName);
+
+  QApplication::restoreOverrideCursor();
+
+  if (world == NULL)
+  {
+    QMessageBox::warning(this, tr("GUIDE"),
+                         tr("Cannot read file %1:\n%2.")
+                         .arg(file.fileName())
+                         .arg(file.errorString()));
+    return false;
+  }
+
+  mWorld = world;
+
   return true;
 }
 
