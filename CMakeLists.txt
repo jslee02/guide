@@ -80,20 +80,19 @@ set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
 
 ## Fine Qt4 (http://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects)
-#find_package(Qt5 REQUIRED)
+#find_package(Qt4 REQUIRED)
 #set(QT_USE_QTOPENGL TRUE)
 #set(QT_USE_QTXMLL TRUE)
 #set(QT_USE_QTTEST TRUE)
 
 # Qt5 - http://qt-project.org/doc/qt-5/cmake-manual.html
-# Find includes in corresponding build directories
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
 
 # Find the QtWidgets library
+find_package(Qt REQUIRED)
 find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Core    REQUIRED)
+find_package(Qt5OpenGL  REQUIRED)
 
 # Find Ogre3d
 # setup some possible locations for OGRE
@@ -149,7 +148,7 @@ find_package(OIS REQUIRED)
 include_directories(BEFORE src)
 include_directories(${DART_INCLUDE_DIRS})
 include_directories(${GUIDE_INCLUDE_DIRS})
-include_directories(${OPENTHREADS_INCLUDE_DIR})
+include_directories(${OGRE_INCLUDE_DIRS})
 include_directories(${CMAKE_BINARY_DIR})
 include_directories("${CMAKE_BINARY_DIR}/src")
 link_directories(
@@ -223,7 +222,7 @@ endif()
 set(CPACK_PACKAGE_VERSION_MAJOR ${GUIDE_MAJOR_VERSION})
 set(CPACK_PACKAGE_VERSION_MINOR ${GUIDE_MINOR_VERSION})
 set(CPACK_PACKAGE_VERSION_PATCH ${GUIDE_PATCH_VERSION})
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "dart (>=2.6.0) qt4 openscenegraph")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "dart (>=2.6.0) qt5 ogre3d")
 
 set(CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
 set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}_${CPACK_SYSTEM_NAME}")

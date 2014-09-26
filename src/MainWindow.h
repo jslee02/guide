@@ -1,16 +1,26 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <OGRE/Ogre.h>
+
 #include <QtWidgets>
 
-class ViewerWidget;
+class QOgreWidget;
 
 class MainWindow : public QMainWindow
 {
   Q_OBJECT
 
 public:
+  ///
   MainWindow();
+
+  virtual ~MainWindow();
+
+  void setupResources();
+  void setupRenderSystem();
+  void createScene();
+  void createQtWidgets();
 
 protected:
   void closeEvent(QCloseEvent *event);
@@ -40,7 +50,35 @@ private:
   void updateRecentFileActions();
   QString strippedName(const QString &fullFileName);
 
-  ViewerWidget* mMainViewer;
+  //----------------------------------------------------------------------------
+  // Ogre3d
+  //----------------------------------------------------------------------------
+  ///
+  QOgreWidget* mOgreWidget;
+
+  ///
+  Ogre::Root* mOgreRoot;
+
+  ///
+  Ogre::RenderWindow* mRenderWindow;
+
+  ///
+  Ogre::Viewport* mOgreViewport;
+
+  ///
+  Ogre::RenderSystem* mRenderSystem;
+
+  ///
+  Ogre::SceneManager* mSceneManager;
+
+  ///
+  Ogre::Camera* mCamera;
+
+  ///
+  //QCameraMan* mCameraMan;
+
+  //----------------------------------------------------------------------------
+
   QLabel* locationLabel;
   QLabel* formulaLabel;
   QStringList recentFiles;
