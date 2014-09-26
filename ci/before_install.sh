@@ -3,9 +3,9 @@ echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 echo -e "Host bitbucket.org\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
 # Install DART
-sudo apt-add-repository ppa:libccd-debs
-sudo apt-add-repository ppa:fcl-debs
-sudo apt-add-repository ppa:dartsim
+sudo apt-add-repository --yes ppa:libccd-debs
+sudo apt-add-repository --yes ppa:fcl-debs
+sudo apt-add-repository --yes ppa:dartsim
 sudo apt-get update
 sudo apt-get install libdart4-dev
 
