@@ -15,6 +15,7 @@ libxmu-dev
 libxi-dev
 libdart5-dev
 qt5-default
+liburdfdom-dev
 '
 
 sudo apt-get -qq --yes --force-yes install $APT
