@@ -14,6 +14,7 @@ libqt4-dev
 libxmu-dev
 libxi-dev
 libdart5-dev
+libqt5-default
 '
 
 sudo apt-get -qq --yes --force-yes install $APT
