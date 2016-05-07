@@ -44,7 +44,6 @@ endif()
 
 target_link_libraries(guide
     ${DART_LIBRARIES}
-    ${OGRE_LIBRARIES}
     ${Boost_LIBRARIES}
 )
 
@@ -58,36 +57,5 @@ if(MSVC)
   set_target_properties(${target} PROPERTIES STATIC_LIBRARY_FLAGS_RELEASE "/LTCG")
 endif()
 
-set(OGRE_RESOURCE_FOLDER ${CMAKE_SOURCE_DIR}/guide/resources)
-
-if(UNIX)
-  include_directories(/usr/include/OGRE)
-  set(OGRE_PLUGIN_FOLDER "${OGRE_LIBRARY_DIR_DBG}/OGRE-1.9.0")
-elseif(WIN32)
-  include_directories(
-      "${OGRE_HOME}\\include"
-      "${OGRE_HOME}\\include\\OGRE"
-      "${OGRE_HOME}\\include\\OGRE\\RenderSystems\\GL"
-      "${OGRE_HOME}\\boost"
-  )
-  link_directories(
-      ${LINK_DIRECORIES}
-      "${OGRE_HOME}\\lib\\Release"
-      "${OGRE_HOME}\\boost\\lib"
-  )
-  set(OGRE_PLUGIN_FOLDER "${OGRE_HOME}\\bin\\Release")
-endif()
-
-configure_file(
-  "${CMAKE_SOURCE_DIR}/guide/plugins.cfg.in"
-  "${CMAKE_BINARY_DIR}/guide/plugins.cfg"
-  )
-
-configure_file(
-  "${CMAKE_SOURCE_DIR}/guide/resources.cfg.in"
-  "${CMAKE_BINARY_DIR}/guide/resources.cfg"
-)
-
 install(DIRECTORY ./ DESTINATION include/guide FILES_MATCHING PATTERN "*.h")
 install(TARGETS guide EXPORT GUIDETargets DESTINATION lib)
-

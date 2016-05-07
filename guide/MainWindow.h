@@ -1,13 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <OGRE/Ogre.h>
-
 #include <QtWidgets>
 
 #include <dart/simulation/World.h>
-
-class QOgreWidget;
 
 class MainWindow : public QMainWindow
 {
@@ -57,25 +53,7 @@ private:
   // Ogre3d
   //----------------------------------------------------------------------------
   ///
-  QOgreWidget* mOgreWidget;
-
-  ///
-  Ogre::Root* mOgreRoot;
-
-  ///
-  Ogre::RenderWindow* mRenderWindow;
-
-  ///
-  Ogre::Viewport* mOgreViewport;
-
-  ///
-  Ogre::RenderSystem* mRenderSystem;
-
-  ///
-  Ogre::SceneManager* mSceneManager;
-
-  ///
-  Ogre::Camera* mCamera;
+  //QOgreWidget* mOgreWidget;
 
   ///
   //QCameraMan* mCameraMan;
@@ -84,7 +62,7 @@ private:
   // DART
   //----------------------------------------------------------------------------
   /// World
-  dart::simulation::World* mWorld;
+  dart::simulation::WorldPtr mWorld;
 
   //----------------------------------------------------------------------------
 

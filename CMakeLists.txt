@@ -22,15 +22,6 @@ IF(NOT CMAKE_BUILD_TYPE)
       FORCE)
 ENDIF(NOT CMAKE_BUILD_TYPE)
 
-# GCCFilter, if appliciable
-if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUCPP)
-   option(COLOR_GCC "Use GCCFilter to color compiler output messages" OFF)
-   set(COLOR_GCC_OPTIONS "-c -r -w" CACHE STRING "Arguments that are passed to gccfilter when output coloring is switchend on. Defaults to -c -r -w.")
-   if(COLOR_GCC)
-      set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "gccfilter ${COLOR_GCC_OPTIONS}")
-   endif()
-endif()
-
 if(MSVC)
   message(STATUS "Setup Visual Studio Specific Flags")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
@@ -38,7 +29,7 @@ if(MSVC)
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MD /Zi /GL /Gy /W1 /EHsc /arch:SSE2 /openmp")
   set(CMAKE_EXE_LINKER_FLAGS_RELEASE "/LTCG")
 elseif(CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-  set(CMAKE_CXX_FLAGS "-msse2 -fPIC")
+  set(CMAKE_CXX_FLAGS "-std=c++11 -msse2 -fPIC")
   set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
   set(CMAKE_CXX_FLAGS_DEBUG "-g -fno-omit-frame-pointer -fno-inline-functions -fno-inline-functions-called-once -fno-optimize-sibling-calls")
   set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELEASE} ${CMAKE_CXX_FLAGS_DEBUG}")
@@ -63,7 +54,7 @@ find_package(Eigen3 REQUIRED)
 include_directories(${Eigen_INCLUDE_DIRS})
 
 # Find DART
-find_package(DART 4.0 REQUIRED)
+find_package(DART 5.1 REQUIRED)
 
 # Find OpenGL
 find_package(OpenGL)
@@ -94,61 +85,10 @@ find_package(Qt REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5OpenGL  REQUIRED)
 
-# Find Ogre3d
-# setup some possible locations for OGRE
-if(WIN32)
-  getenv_path(OGRE_HOME)
-  getenv_path(OGRE_SDK)
-  getenv_path(PROGRAMFILES)
-
-  set(OGRE_ROOT_GUESSES
-    ${ENV_PROGRAMFILES}/OGRE
-    C:/OgreSDK
-    $ENV_OGRE_HOME
-    $ENV_OGRE_SDK
-    ${OGRE_HOME}
-    ${OGRE_SDK}
-  )
-elseif(UNIX)
-  set(OGRE_ROOT_GUESSES
-    /opt/ogre
-    /opt/OGRE
-    /usr/lib${LIB_SUFFIX}/ogre
-    /usr/lib${LIB_SUFFIX}/OGRE
-    /usr/local/lib${LIB_SUFFIX}/ogre
-    /usr/local/lib${LIB_SUFFIX}/OGRE
-    /usr/share/OGRE/cmake/modules
-    $ENV{HOME}/ogre
-    $ENV{HOME}/OGRE
-    $ENV_OGRE_HOME
-    $ENV_OGRE_SDK
-    ${OGRE_HOME}
-    ${OGRE_SDK}
-    "$ENV{OGRE_HOME}/CMake/"
-    "/usr/local/lib/OGRE/cmake"
-    "/usr/lib/OGRE/cmake"
-    "/usr/share/OGRE/cmake"
-  )
-endif ()
-
-# find Ogre cmake modules path
-find_path(OGRE_CMAKE_MODULE_PATH FindOGRE.cmake
-    HINTS ${OGRE_ROOT_GUESSES}
-)
-if(OGRE_CMAKE_MODULE_PATH-NOTFOUND)
-  message(SEND_ERROR "Failed to find OGRE module path.")
-else()
-  set(CMAKE_MODULE_PATH ${OGRE_CMAKE_MODULE_PATH} ${CMAKE_MODULE_PATH})
-endif()
-
-find_package(OGRE REQUIRED)
-find_package(OIS REQUIRED)
-
 #-------------------------------------------------------------------------------
 include_directories(BEFORE guide)
 include_directories(${DART_INCLUDE_DIRS})
 include_directories(${GUIDE_INCLUDE_DIRS})
-include_directories(${OGRE_INCLUDE_DIRS})
 include_directories(${CMAKE_BINARY_DIR})
 include_directories("${CMAKE_BINARY_DIR}/guide")
 link_directories(
@@ -177,7 +117,7 @@ install(FILES ${PC_CONFIG_OUT} DESTINATION lib/pkgconfig)
 # Build source
 add_subdirectory(guide)
 enable_testing()
-add_subdirectory(unittests)
+add_subdirectory(tests)
 
 install(EXPORT GUIDETargets DESTINATION share/guide)
 
@@ -222,7 +162,7 @@ endif()
 set(CPACK_PACKAGE_VERSION_MAJOR ${GUIDE_MAJOR_VERSION})
 set(CPACK_PACKAGE_VERSION_MINOR ${GUIDE_MINOR_VERSION})
 set(CPACK_PACKAGE_VERSION_PATCH ${GUIDE_PATCH_VERSION})
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "dart (>=2.6.0) qt5 ogre3d")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "dart (>=2.6.0) qt5")
 
 set(CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
 set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}_${CPACK_SYSTEM_NAME}")
