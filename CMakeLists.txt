@@ -54,11 +54,10 @@ find_package(Eigen3 REQUIRED)
 include_directories(${Eigen_INCLUDE_DIRS})
 
 # Find DART
-find_package(DART 5.1 REQUIRED)
+find_package(DART 6.1 REQUIRED COMPONENTS utils gui-osg)
 
 # Find OpenGL
 find_package(OpenGL)
-message(STATUS "OpenGL libraries: ${OPENGL_LIBRARY}")
 link_libraries(guide ${OPENGL_LIBRARIES})
 
 # Boost
@@ -69,12 +68,6 @@ endif()
 add_definitions(-DBOOST_TEST_DYN_LINK)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
-
-## Fine Qt4 (http://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects)
-#find_package(Qt4 REQUIRED)
-#set(QT_USE_QTOPENGL TRUE)
-#set(QT_USE_QTXMLL TRUE)
-#set(QT_USE_QTTEST TRUE)
 
 # Qt5 - http://qt-project.org/doc/qt-5/cmake-manual.html
 # Instruct CMake to run moc automatically when needed.
@@ -151,25 +144,3 @@ if(DOXYGEN_FOUND)
     COMMAND ${CMAKE_COMMAND} -E echo "Done."
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 endif()
-
-###############
-# Package Installer
-set(CPACK_PACKAGE_NAME "guide")
-set(CPACK_SYSTEM_NAME "i386")
-if( CMAKE_SIZEOF_VOID_P EQUAL 8 )
-    set(CPACK_SYSTEM_NAME "amd64")
-endif()
-set(CPACK_PACKAGE_VERSION_MAJOR ${GUIDE_MAJOR_VERSION})
-set(CPACK_PACKAGE_VERSION_MINOR ${GUIDE_MINOR_VERSION})
-set(CPACK_PACKAGE_VERSION_PATCH ${GUIDE_PATCH_VERSION})
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "dart (>=2.6.0) qt5")
-
-set(CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
-set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}_${CPACK_SYSTEM_NAME}")
-set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Jeongseok Lee and Karen Liu (www.cc.gatech.edu/~karenliu/)")
-
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${PKG_DESC}")
-set(CPACK_PACKAGE_VENDOR "Computer Graphics Lab at GT")
-set(CPACK_PACKAGING_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
-
-include(CPack)

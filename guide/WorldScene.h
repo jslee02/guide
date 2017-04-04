@@ -1,7 +1,7 @@
 #ifndef GUIDE_WORLDSCENE_H
 #define GUIDE_WORLDSCENE_H
 
-#include <dart/simulation/World.h>
+#include <dart/dart.hpp>
 
 ///
 class WorldScene

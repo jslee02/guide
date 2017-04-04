@@ -3,7 +3,7 @@
 
 #include <QtWidgets>
 
-#include <dart/simulation/World.h>
+#include <dart/dart.hpp>
 
 class MainWindow : public QMainWindow
 {
