@@ -1,117 +1,8 @@
 #include <dart/dart.hpp>
-#include <dart/gui/osg/osg.hpp>
 
-//==============================================================================
-class CustomWorldNode : public dart::gui::osg::WorldNode
-{
-public:
+#include "guide/WorldNode.h"
+#include "guide/EventHandler.h"
 
-  CustomWorldNode(const dart::simulation::WorldPtr& world = nullptr)
-    : dart::gui::osg::WorldNode(world)
-  {
-    // Set up the customized WorldNode
-  }
-
-  void customPreRefresh()
-  {
-    // Use this function to execute custom code before each time that the
-    // window is rendered. This function can be deleted if it does not need
-    // to be used.
-  }
-
-  void customPostRefresh()
-  {
-    // Use this function to execute custom code after each time that the
-    // window is rendered. This function can be deleted if it does not need
-    // to be used.
-  }
-
-  void customPreStep()
-  {
-    // Use this function to execute custom code before each simulation time
-    // step is performed. This function can be deleted if it does not need
-    // to be used.
-  }
-
-  void customPostStep()
-  {
-    // Use this function to execute custom code after each simulation time
-    // step is performed. This function can be deleted if it does not need
-    // to be used.
-  }
-
-};
-
-//==============================================================================
-class CustomEventHandler : public osgGA::GUIEventHandler
-{
-public:
-
-  CustomEventHandler(/*Pass in any necessary arguments*/)
-  {
-    // Set up the customized event handler
-  }
-
-  virtual bool handle(const osgGA::GUIEventAdapter& ea,
-                      osgGA::GUIActionAdapter&) override
-  {
-    if(ea.getEventType() == osgGA::GUIEventAdapter::KEYDOWN)
-    {
-      if(ea.getKey() == 'q')
-      {
-        std::cout << "Lowercase q pressed" << std::endl;
-        return true;
-      }
-      else if(ea.getKey() == 'Q')
-      {
-        std::cout << "Capital Q pressed" << std::endl;
-        return true;
-      }
-      else if(ea.getKey() == osgGA::GUIEventAdapter::KEY_Left)
-      {
-        std::cout << "Left arrow key pressed" << std::endl;
-        return true;
-      }
-      else if(ea.getKey() == osgGA::GUIEventAdapter::KEY_Right)
-      {
-        std::cout << "Right arrow key pressed" << std::endl;
-        return true;
-      }
-    }
-    else if(ea.getEventType() == osgGA::GUIEventAdapter::KEYUP)
-    {
-      if(ea.getKey() == 'q')
-      {
-        std::cout << "Lowercase q released" << std::endl;
-        return true;
-      }
-      else if(ea.getKey() == 'Q')
-      {
-        std::cout << "Capital Q released" << std::endl;
-        return true;
-      }
-      else if(ea.getKey() == osgGA::GUIEventAdapter::KEY_Left)
-      {
-        std::cout << "Left arrow key released" << std::endl;
-        return true;
-      }
-      else if(ea.getKey() == osgGA::GUIEventAdapter::KEY_Right)
-      {
-        std::cout << "Right arrow key released" << std::endl;
-        return true;
-      }
-    }
-
-    // The return value should be 'true' if the input has been fully handled
-    // and should not be visible to any remaining event handlers. It should be
-    // false if the input has not been fully handled and should be viewed by
-    // any remaining event handlers.
-    return false;
-  }
-
-};
-
-//==============================================================================
 int main()
 {
   // Create a world
@@ -123,7 +14,7 @@ int main()
   world->addSimpleFrame(target);
 
   // Wrap a WorldNode around it
-  osg::ref_ptr<CustomWorldNode> node = new CustomWorldNode(world);
+  osg::ref_ptr<guide::CustomWorldNode> node = new guide::CustomWorldNode(world);
 
   // Create a Viewer and set it up with the WorldNode
   dart::gui::osg::ImGuiViewer viewer;

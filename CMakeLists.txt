@@ -79,7 +79,7 @@ find_package(Qt5Widgets REQUIRED)
 find_package(Qt5OpenGL  REQUIRED)
 
 #-------------------------------------------------------------------------------
-include_directories(BEFORE guide)
+include_directories(BEFORE ${CMAKE_SOURCE_DIR})
 include_directories(${DART_INCLUDE_DIRS})
 include_directories(${GUIDE_INCLUDE_DIRS})
 include_directories(${CMAKE_BINARY_DIR})
