@@ -13,7 +13,7 @@ libopenscenegraph-dev
 libqt4-dev
 libxmu-dev
 libxi-dev
-libdart5-dev
+libdart6-all-dev
 qt5-default
 liburdfdom-dev
 '

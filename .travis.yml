@@ -9,7 +9,7 @@ compiler:
   - clang
 
 before_install:
-  - 'ci/before_install.sh'
+  - '.travis/before_install.sh'
 
 script:
   - mkdir build
